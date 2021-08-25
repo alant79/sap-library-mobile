@@ -148,7 +148,8 @@ const styles = StyleSheet.create({
   descСontainer: {
     width: '50%',
     height: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    padding: 2
   },
   descBodyСontainer: {
     overflow: 'hidden',
