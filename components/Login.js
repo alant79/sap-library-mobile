@@ -1,16 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, Picker } from 'react-native';
 
 export default function App(props) {
-
-    const initialLoginList = []
-    initialLoginList.push('ANTON.ALEXEYEV@ALPECONSULTING.COM')
-    initialLoginList.push('KONSTANTIN.GACHECHILADZE@ALPECONSULTING.COM')
-    initialLoginList.push('ANTON.BREIKOV@ALPECONSULTING.COM')
-    initialLoginList.push('VIKTOR.YURZANOV@ALPECONSULTING.COM')
-    initialLoginList.push('ANTON.VAKHLAMEEV@@ALPECONSULTING.COM')
-
-    const [loginList, setLoginList] = useState(initialLoginList)
+ 
     return (
         <View style={styles.login}>
             {<View style={styles.innerLoginView}>
@@ -19,8 +11,8 @@ export default function App(props) {
             <View style={styles.innerLoginView}>
                 <Picker style={styles.picker} onValueChange={(value) => { props.onChangeLogin(value) }}>
                     {
-                        loginList.map((item, index) => {
-                            return (<Picker.Item style={styles.pickerItem} label={item} value={index} key={index} />)
+                        props.users.map((item, index) => {
+                            return (<Picker.Item style={styles.pickerItem} label={item} value={item} key={index} />)
                         })
                     }
                 </Picker>
