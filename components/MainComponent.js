@@ -1,4 +1,4 @@
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 

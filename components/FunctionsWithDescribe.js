@@ -8,7 +8,7 @@ export default function App(props) {
     return (
         <View style={styles.funcDescСontainer}>
             <View style={styles.funcСontainer}>
-                <Functions login = {props.login} userFunctions = {props.userFunctions}/>
+                <Functions login = {props.login} userFunctions = {props.userFunctions} changeAdvTesxt={props.changeAdvTesxt}/>
             </View>
             <View style={styles.descСontainer}>
                 <Describe/>

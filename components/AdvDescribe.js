@@ -7,7 +7,7 @@ export default function App(props) {
     return (
         <TextInput
             style={{ height: '100%' }}
-            numberOfLines='10'
+            numberOfLines='5'
             multiline={true}
             value={props.advText} />
 

@@ -43,66 +43,32 @@ export default function App(props) {
 
 
     return (
-            <View style={styles.funcDescСontainer}>
-                <View style={styles.funcСontainer}>
-                    <View style={styles.funcHeaderСontainer}>
 
-
-                    </View>
-                    <View style={styles.funcBodyСontainer}>
-                        <CustomList data={props.userFunctions} onPress={handlerBodyPress} />
-                    </View>
-
-                </View>
-                <View style={styles.descСontainer}>
-                    <View style={styles.descHeaderСontainer}>
-                        {
-                            descList.map((item) => {
-                                return (
-                                    <CustomButton title={item.name} id={item.id} key={item.id} onPress={handlerHeaderPress} isActive={item.isActive} />
-                                )
-                            })
-                        }
-                    </View>
-                    <View style={styles.descBodyСontainer}>
-                        <CustomList data={listTrsansactions} onPress={handlerBodyPress} />
-                    </View>
-
-                </View>
+        <View>
+            <View style={styles.descHeaderСontainer}>
+                {
+                    descList.map((item) => {
+                        return (
+                            <CustomButton title={item.name} id={item.id} key={item.id} onPress={handlerHeaderPress} isActive={item.isActive} />
+                        )
+                    })
+                }
             </View>
+            <View style={styles.descBodyСontainer}>
+                <CustomList data={listTrsansactions} onPress={handlerBodyPress} />
+            </View>
+
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    funcDescСontainer: {
-        flexDirection: 'row',
-        height: '100%',
-        width: '100%'
-    },
-    funcСontainer: {
-        width: '50%',
-        height: '100%',
-        borderRightWidth: 1,
-        borderColor: 'black',
-        overflow: 'hidden',
-        padding: 2
-    },
-    descСontainer: {
-        width: '50%',
-        height: '100%',
-        overflow: 'hidden',
-        padding: 2
-    },
-    funcBodyСontainer: {
-        overflow: 'hidden',
-        width: '100%',
-        maxHeight: '80%'
-    }, 
+
     descBodyСontainer: {
         overflow: 'hidden',
         width: '100%',
         maxHeight: '80%'
-    }, 
+    },
     descHeaderСontainer: {
         flexDirection: 'row',
         padding: 2,
