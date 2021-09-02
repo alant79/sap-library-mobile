@@ -12,7 +12,7 @@ export default function MainCocmponent() {
 
     const users = useSelector(state => {
         const localUsers = []
-        state.sapData.users.map(el => localUsers.push(el))
+        state.sapData.data.map(el => localUsers.push(el.user))
         return localUsers
     });
 
