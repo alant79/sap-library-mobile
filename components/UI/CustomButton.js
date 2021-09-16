@@ -21,7 +21,8 @@ export default function CustomButton(props) {
 
 const styles = StyleSheet.create({
     containerComponent: {
-        margin: 2
+        margin: 2,
+        maxWidth: '100%'
     },
     containerButton: {
         padding: 2,

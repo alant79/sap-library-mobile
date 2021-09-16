@@ -3,21 +3,27 @@ import { useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 import CustomButton from './UI/CustomButton';
 import CustomList from './UI/CustomList';
+import {constants}  from '../constants'
 
 export default function App(props) {
 
+    useEffect(()=> {
+        setFunctionId('')
+    }, [props.login])
+
     const homeFunction = {
-        name: 'home', id: '000000000000', isActive: true
+        name: 'home', id: '', isActive: true, advdesc: constants.homeAdvdesc
     }
 
     const [functionId, setFunctionId] = useState('')
+
 
     const bodyList = useSelector(state => {
         const localBodyList = []
         state.sapData.data.map(el => {
             if (el.user === props.login) {
                 el.functions.map(elF => {
-                    if (functionId == '' || elF.parent === functionId) {
+                    if (elF.parent === functionId) {
                         localBodyList.push(elF)
                     }
                 })
@@ -26,43 +32,63 @@ export default function App(props) {
         return localBodyList
     });
 
-    const getParentFunctions = (id, destArr) => {
-        console.log('getParentFunctions', srcArr)
-
-        srcArr && srcArr.map(el => {
-            if (el.parent === id) {
-                destArr.unshift(el)
-                console.log('итог', destArr)
-                getParentFunctions(el.id, srcArr, destArr)
+    const getParentFunctions = (state, id, destArr) => {
+        state.sapData.data.map(el => {
+            if (el.user === props.login) {
+                el.functions.map(elF => {
+                    if (elF.id=== id) {
+                        destArr.unshift(elF)
+                        destArr[0].isActive = false
+                        elF.parent && getParentFunctions(state, elF.parent, destArr)
+                    }
+                })
             }
+          
         })
     }
 
     const headerList = useSelector(state => {
         const localHeaderList = []
+        let onlyHome = true
         functionId && state.sapData.data.map(el => {
             if (el.user === props.login) {
                 el.functions.map(elF => {
-                    if (elF.id === functionId) {
-                        localHeaderList.unshift(el)
-                        if (el.parent) {
-                            getParentFunctions(el.parent, localHeaderList)
-                        }
+                    if (elF.id === functionId) {                  
+                        localHeaderList.unshift(elF)  
+                        localHeaderList[0].isActive = true                  
+                        elF.parent && getParentFunctions(state, elF.parent, localHeaderList)
+                        onlyHome = false
                     }
                 })
 
             }
         })
         localHeaderList.unshift(homeFunction)
+        localHeaderList[0].isActive = onlyHome
         return localHeaderList
     });
 
     const handlerBodyPress = (id) => {
-        setFunctionId(id)
+        setFunctionId(id) 
+        getAdvDesc(bodyList,id )
+        props.changeDesc(id)
+          
     }
 
     const handlerHeaderPress = (id) => {
         setFunctionId(id)
+        getAdvDesc(headerList,id )
+    }
+
+    const getAdvDesc = (list, id) => {
+        let text = ''
+        list.map(el=> {
+            if (el.id===id) {
+                text =  el.advdesc
+                return
+            }
+        } )
+        props.changeAdvText(text)
     }
 
 

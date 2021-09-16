@@ -1,41 +1,105 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import CustomButton from './UI/CustomButton';
 import CustomList from './UI/CustomList';
+import { useSelector } from 'react-redux';
 
 export default function App(props) {
 
-    const initialDescList = []
-    initialDescList.push({ name: 'Transactions (5)', id: '00000001', isActive: true })
-    initialDescList.push({ name: 'BADI (8)', id: '00000002', isActive: false })
-    initialDescList.push({ name: 'Classes (10)', id: '00000003', isActive: false })
-    initialDescList.push({ name: 'Programs (7)', id: '00000004', isActive: false })
-    const initialTransactions = []
-    initialTransactions.push({ name: 'SE11', id: '00000001', desc: 'Транзакция SE11 cxvcxvxcvxcvxcvxv' })
-    initialTransactions.push({ name: 'SE12', id: '00000002', desc: 'Транзакция SE12' })
-    initialTransactions.push({ name: 'SE13', id: '00000003', desc: 'Транзакция SE13' })
-    initialTransactions.push({ name: 'SE14', id: '00000004', desc: 'Транзакция SE14' })
-    initialTransactions.push({ name: 'SE15', id: '00000005', desc: 'Транзакция SE15' })
-    initialTransactions.push({ name: 'SE16', id: '00000006', desc: 'Транзакция SE16' })
-    initialTransactions.push({ name: 'SE17', id: '00000007', desc: 'Транзакция SE17' })
-    initialTransactions.push({ name: 'SE18', id: '00000008', desc: 'Транзакция SE18' })
-    initialTransactions.push({ name: 'SE19', id: '00000009', desc: 'Транзакция SE19' })
-    initialTransactions.push({ name: 'SE20', id: '00000010', desc: 'Транзакция SE20' })
-    initialTransactions.push({ name: 'SE21', id: '00000011', desc: 'Транзакция SE21' })
-    initialTransactions.push({ name: 'SE22', id: '00000012', desc: 'Транзакция SE22' })
+    const [functionId, setFunctionId] = useState('')
+    const [typeDesc, setTypeDesc] = useState('')
 
-    const [descList, setDescList] = useState(initialDescList)
-    const [listTrsansactions, setListTrsansactions] = useState(initialTransactions)
+    useEffect(() => {
+        setFunctionId(props.functionId)
+    }, [props.functionId])
 
-    const handlerHeaderPress = (id) => {
-        setDescList((prevState) => {
-            const newArr = []
-            prevState.map(el => {
-                newArr.push({ ...el, isActive: el.id === id })
-            })
-            return newArr
+    const addDesc = (descList, nameDesc, data) => {
+        let res = 0
+        data.map(el => {
+            if (el.functionId === functionId) {
+                res += 1
+            }
+        })
+        if (res > 0) {
+            descList.push({ name: `${nameDesc} (${res})`, type: nameDesc, id: nameDesc, isActive: nameDesc == typeDesc })
+        }
+    }
+
+    const addBodyList = (localBodyList, data) => {
+        data.map(el => {
+            if (el.functionId == functionId) {
+                const obj = { id: el.id, name: el.name }
+                if (el.desc) {
+                    obj.desc = el.desc
+                }
+                localBodyList.push(obj)
+            }
         })
     }
+
+    const headerList = useSelector(state => {
+        const localHeaderList = []
+        state.sapData.data.map(el => {
+            if (el.user === props.login) {
+                el.transactions && addDesc(localHeaderList, 'transactions', el.transactions)
+                el.refs && addDesc(localHeaderList, 'refs', el.refs)
+                el.badies && addDesc(localHeaderList, 'badies', el.badies)
+                el.bapies && addDesc(localHeaderList, 'bapies', el.bapies)
+                el.classes && addDesc(localHeaderList, 'classes', el.classes)
+                el.exprs && addDesc(localHeaderList, 'exprs', el.exprs)
+                el.fms && addDesc(localHeaderList, 'fms', el.fms)
+                el.files && addDesc(localHeaderList, 'files', el.files)
+            }
+        })
+        if (localHeaderList.length >= 1 && typeDesc == '') {
+            localHeaderList[0].isActive = true
+        }
+        return localHeaderList
+    });
+
+    const bodyList = useSelector(state => {
+        const localBodyList = []
+        typeDesc && state.sapData.data.map(el => {
+            if (el.user === props.login) {
+                switch (typeDesc) {
+                    case 'transactions':
+                        el.transactions && addBodyList(localBodyList, el.transactions)
+                        break;
+                    case 'refs':
+                        el.refs && addBodyList(localBodyList, el.refs)
+                        break;
+                    case 'badies':
+                        el.badies && addBodyList(localBodyList, el.badies)
+                        break;
+                    case 'bapies':
+                        el.bapies && addBodyList(localBodyList, el.bapies)
+                        break;
+                    case 'classes':
+                        el.classes && addBodyList(localBodyList, el.classes)
+                        break;
+                    case 'exprs':
+                        el.exprs && addBodyList(localBodyList, el.exprs)
+                        break;
+                    case 'fms':
+                        el.fms && addBodyList(localBodyList, el.fms)
+                        break;
+                    case 'files':
+                        el.files && addBodyList(localBodyList, el.files)
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        })
+
+        return localBodyList
+    });
+
+    const handlerHeaderPress = (id) => {
+        setTypeDesc(id)
+    }
+
 
     const handlerBodyPress = (id) => {
 
@@ -47,15 +111,15 @@ export default function App(props) {
         <View>
             <View style={styles.descHeaderСontainer}>
                 {
-                    descList.map((item) => {
+                    headerList.map((item) => {
                         return (
-                            <CustomButton title={item.name} id={item.id} key={item.id} onPress={handlerHeaderPress} isActive={item.isActive} />
+                            <CustomButton title={item.name} id={item.type} key={item.type} onPress={handlerHeaderPress} isActive={item.isActive} />
                         )
                     })
                 }
             </View>
             <View style={styles.descBodyСontainer}>
-                <CustomList data={listTrsansactions} onPress={handlerBodyPress} />
+                <CustomList data={bodyList} onPress={handlerBodyPress} />
             </View>
 
         </View>
