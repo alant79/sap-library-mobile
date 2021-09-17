@@ -18,7 +18,7 @@ export const fetchData = () => {
 
     const transformTransacions = (src) => {
         const transactionsList = []
-        src.transacions && src.transactions.map(elF => {
+        src.transactions && src.transactions.map(elF => {
             transactionsList.push({
                 id: elF.transactionid,
                 functionId: elF.functionid,               

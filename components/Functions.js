@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     funcBodyСontainer: {
         overflow: 'hidden',
         width: '100%',
+        padding: 2,
         maxHeight: '80%'
     },
     funcHeaderСontainer: {
@@ -127,6 +128,6 @@ const styles = StyleSheet.create({
         padding: 2,
         flexWrap: 'wrap',
         borderBottomWidth: 1,
-        borderColor: 'black',
+        borderColor: 'blue',
     }
 });

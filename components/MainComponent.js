@@ -12,6 +12,7 @@ export default function MainCocmponent() {
 
     const users = useSelector(state => {
         const localUsers = []
+        localUsers.push('')
         state.sapData.data.map(el => localUsers.push(el.user))
         return localUsers
     });
@@ -45,9 +46,9 @@ export default function MainCocmponent() {
             <View style={styles.loginContainer}>
                 <Login users={users} onChangeLogin={handlerOnChangeLogin} />
             </View>
-            <View style={styles.functionContainer}>
+            {login!=='' && <View style={styles.functionContainer}>
                 <FunctionsWithContent login={login} userFunctions={userFunctions} />
-            </View>
+            </View>}
         </View>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 
 
 export default function App(props) {
@@ -7,14 +7,14 @@ export default function App(props) {
     const [advText, setAdvText] = useState('')
     const [id, setId] = useState('')
 
-    const headerList = []
+    let headerList = []
 
     useEffect(()=> {
         if (props.id) {
             setId(props.id)
         }
         headerList = props.headerList
-        headerList.map(el=> {
+        headerList && headerList.map(el=> {
             if ( el.id === id) {
                 el.isActive = true
                 setAdvText(el.advText)
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     advDescBodyСontainer: {
         overflow: 'hidden',
         width: '100%',
+        padding: 2,
         maxHeight: '80%'
     },
     advDescHeaderСontainer: {
@@ -67,6 +68,6 @@ const styles = StyleSheet.create({
         padding: 2,
         flexWrap: 'wrap',
         borderBottomWidth: 1,
-        borderColor: 'black',
+        borderColor: 'blue',
     }
 });

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         flexWrap: 'wrap',
         width: '100%',
-        borderWidth: 1,
+        borderBottomWidth: 1,
         borderStyle: 'dashed'
     },
     containerItem: {
