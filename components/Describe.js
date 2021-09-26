@@ -11,6 +11,7 @@ export default function App(props) {
 
     useEffect(() => {
         setFunctionId(props.functionId)
+        setTypeDesc('')
     }, [props.functionId])
 
     const addDesc = (descList, nameDesc, data) => {
@@ -32,6 +33,9 @@ export default function App(props) {
                 if (el.desc) {
                     obj.desc = el.desc
                 }
+                if (el.advdesc) {
+                    obj.advdesc = el.advdesc
+                }               
                 localBodyList.push(obj)
             }
         })
@@ -53,6 +57,7 @@ export default function App(props) {
         })
         if (localHeaderList.length >= 1 && typeDesc == '') {
             localHeaderList[0].isActive = true
+            setTypeDesc(localHeaderList[0].id)
         }
         return localHeaderList
     });
@@ -65,7 +70,7 @@ export default function App(props) {
                     case 'transactions':
                         el.transactions && addBodyList(localBodyList, el.transactions)
                         break;
-                    case 'refs':
+                    case 'refs':                   
                         el.refs && addBodyList(localBodyList, el.refs)
                         break;
                     case 'badies':
@@ -98,17 +103,45 @@ export default function App(props) {
 
     const handlerHeaderPress = (id) => {
         setTypeDesc(id)
+        props.changeAdvText([])
     }
 
 
-    const handlerBodyPress = (id) => {
-
+    const handlerBodyPress = (el) => {
+        switch (typeDesc) {
+            case 'transactions':
+                el.advdesc && props.changeAdvText([{ id: `trans${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            case 'refs':                   
+                el.advdesc && props.changeAdvText([{ id: `refs${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            case 'badies':
+                el.advdesc && props.changeAdvText([{ id: `badies${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            case 'bapies':
+                el.advdesc && props.changeAdvText([{ id: `bapies${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            case 'classes':
+                el.advdesc && props.changeAdvText([{ id: `classes${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            case 'exprs':
+                el.advdesc && props.changeAdvText([{ id: `exprs${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            case 'fms':
+                el.advdesc && props.changeAdvText([{ id: `fms${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            case 'files':
+                el.advdesc && props.changeAdvText([{ id: `files${el.id}`, name: el.name, advText: el.advdesc, isActive: true }])
+                break;
+            default:
+                break;
+        }
     }
 
 
     return (
 
-        <View>
+        <View style={styles.descСontainer}>
             <View style={styles.descHeaderСontainer}>
                 {
                     headerList.map((item) => {
@@ -119,7 +152,7 @@ export default function App(props) {
                 }
             </View>
             <View style={styles.descBodyСontainer}>
-                <CustomList data={bodyList} onPress={handlerBodyPress} />
+                <CustomList data={bodyList} onPress={(obj)=>handlerBodyPress(obj)} />
             </View>
 
         </View>
@@ -127,7 +160,9 @@ export default function App(props) {
 }
 
 const styles = StyleSheet.create({
-
+    descСontainer: {
+        height: '100%',
+    },
     descBodyСontainer: {
         overflow: 'hidden',
         width: '100%',

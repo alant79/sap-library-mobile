@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import { enableExpoCliLogging } from 'expo/build/logs/Logs';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 
 export default function CustomList(props) {
@@ -7,11 +8,28 @@ export default function CustomList(props) {
 
     const handlerPress = (id) => {
         setSelectedId(id)
-        props.onPress(id)
+        props.data.map(el=> {
+            if (el.id === id) {
+                props.onPress( {
+                    id,
+                    name: el.name,
+                    advdesc: el.advdesc
+                })
+            }
+        })
+
+    }
+
+    useEffect(()=> {
+        setSelectedId(null)
+    },[props.data])
+
+    const handleOnPress = (name) => {
+        console.log('long press ',name)
     }
 
     const Item = ({ props, backgroundColor, textColor  }) => (
-        <TouchableOpacity onPress={() => handlerPress(props.id)} style={[styles.item,backgroundColor ]}>
+        <TouchableOpacity onPress={() => handlerPress(props.id)} style={[styles.item,backgroundColor ]} onLongPress={()=> handleOnPress(props.name)}>
             <View style={styles.containerItem}>
                 <Text style={[styles.name,textColor ]}>{props.name}</Text>
             </View>
@@ -52,9 +70,5 @@ const styles = StyleSheet.create({
     },
     containerItem: {
         flex: 1
-    },
-    name: {
-    },
-    desc: {
-    },
+    }
 })

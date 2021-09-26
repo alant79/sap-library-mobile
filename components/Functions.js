@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 import CustomButton from './UI/CustomButton';
 import CustomList from './UI/CustomList';
-import {constants}  from '../constants'
+import { constants } from '../constants'
 
 export default function App(props) {
 
-    useEffect(()=> {
+    useEffect(() => {
         setFunctionId('')
     }, [props.login])
 
@@ -36,14 +36,14 @@ export default function App(props) {
         state.sapData.data.map(el => {
             if (el.user === props.login) {
                 el.functions.map(elF => {
-                    if (elF.id=== id) {
+                    if (elF.id === id) {
                         destArr.unshift(elF)
                         destArr[0].isActive = false
                         elF.parent && getParentFunctions(state, elF.parent, destArr)
                     }
                 })
             }
-          
+
         })
     }
 
@@ -53,9 +53,9 @@ export default function App(props) {
         functionId && state.sapData.data.map(el => {
             if (el.user === props.login) {
                 el.functions.map(elF => {
-                    if (elF.id === functionId) {                  
-                        localHeaderList.unshift(elF)  
-                        localHeaderList[0].isActive = true                  
+                    if (elF.id === functionId) {
+                        localHeaderList.unshift(elF)
+                        localHeaderList[0].isActive = true
                         elF.parent && getParentFunctions(state, elF.parent, localHeaderList)
                         onlyHome = false
                     }
@@ -68,27 +68,32 @@ export default function App(props) {
         return localHeaderList
     });
 
-    const handlerBodyPress = (id) => {
-        setFunctionId(id) 
-        getAdvDesc(bodyList,id )
+    const handlerBodyPress = (obj) => {
+        const id = obj.id
+        setFunctionId(id)
+        getAdvDesc(bodyList, id)
         props.changeDesc(id)
-          
+
     }
 
     const handlerHeaderPress = (id) => {
         setFunctionId(id)
-        getAdvDesc(headerList,id )
+        getAdvDesc(headerList, id)
+        props.changeDesc(id)
     }
 
     const getAdvDesc = (list, id) => {
-        let text = ''
-        list.map(el=> {
-            if (el.id===id) {
-                text =  el.advdesc
+        list.map(el => {
+            if (el.id === id) {
+                if (id === '') {
+                    props.changeAdvText('')
+                } else {
+                    props.changeAdvText({ id: `func${id}`, name: el.name, advText: el.advdesc, isActive: true })
+                }
                 return
             }
-        } )
-        props.changeAdvText(text)
+        })
+
     }
 
 
@@ -105,7 +110,7 @@ export default function App(props) {
 
             </View>
             <View style={styles.funcBodyСontainer}>
-                <CustomList data={bodyList} onPress={(id) => handlerBodyPress(id)} />
+                <CustomList data={bodyList} onPress={(obj) => handlerBodyPress(obj)} />
             </View>
 
         </View>

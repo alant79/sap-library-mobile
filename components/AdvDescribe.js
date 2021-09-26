@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-
+import CustomButton from './UI/CustomButton';
 
 export default function App(props) {
 
     const [advText, setAdvText] = useState('')
     const [id, setId] = useState('')
+    const [headerList, setHeaderList] = useState([])
 
-    let headerList = []
-
-    useEffect(()=> {
-        if (props.id) {
-            setId(props.id)
-        }
-        headerList = props.headerList
-        headerList && headerList.map(el=> {
-            if ( el.id === id) {
-                el.isActive = true
-                setAdvText(el.advText)
+    useEffect(() => {
+        const localHeaderList = props.headerList
+        localHeaderList && localHeaderList.map(el => {
+            if (id !== '') {
+                if (el.id === id) {
+                    el.isActive = true
+                    setAdvText(el.advText)
+                } else {
+                    el.isActive = false
+                }
             } else {
-                el.isActive = false
+                if (el.isActive) {
+                    setAdvText(el.advText)
+                }
             }
-
         })
-    },[props.headerList])
+        setHeaderList(localHeaderList)
+    }, [props.headerList,id])
 
     const handlerHeaderPress = (id) => {
         setId(id)
@@ -31,7 +33,7 @@ export default function App(props) {
 
     return (
         <View style={styles.advDescСontainer}>
-            <View style={styles.advDescBodyСontainer}>
+            <View style={styles.advDescHeaderСontainer}>
                 {
                     headerList.map((item) => {
                         return (
@@ -41,7 +43,7 @@ export default function App(props) {
                 }
 
             </View>
-            <View style={styles.advDescHeaderСontainer}>
+            <View style={styles.advDescBodyСontainer}>
                 <TextInput
                     style={{ height: '100%' }}
                     multiline={true}

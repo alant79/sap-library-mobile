@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
-import { StyleSheet, View,  } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import FunctionsWithDescribe from '../components/FunctionsWithDescribe'
 import AdvDescribe from '../components/AdvDescribe'
-import {constants}  from '../constants'
+import { constants } from '../constants'
 
 export default function App(props) {
 
-    const [advText, setAdvText] = useState(constants.homeAdvdesc)
-    const handleAdvText = (text) => {
-        setAdvText(text)
+
+    const [headerList, setHeaderList] = useState([])
+    const handleAdvText = (paramHeaderList) => {
+        setHeaderList(paramHeaderList)
     }
+
+    useEffect(()=> {
+        setHeaderList([])
+    },[props.login])
 
     return (
         <View style={styles.contentContainer}>
             <View style={styles.funcDescСontainer}>
-               <FunctionsWithDescribe login = {props.login} userFunctions = {props.userFunctions} changeAdvText={(text)=>handleAdvText(text)}/>
+                <FunctionsWithDescribe login={props.login} userFunctions={props.userFunctions} changeAdvText={(paramHeaderList) => handleAdvText(paramHeaderList)} />
             </View>
             <View style={styles.advdescСontainer}>
-               <AdvDescribe advText={advText}/>
+                {(headerList.length > 0) ? <AdvDescribe headerList={headerList} /> : <View style={styles.advdescHomeСontainer}>
+                    <Text>{constants.homeAdvdesc}</Text>
+                </View>}
             </View>
         </View>
     )
@@ -42,6 +49,12 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: 'black',
         height: '50%',
-        width: '100%'
-    }
+        width: '100%',
+    },
+    advdescHomeСontainer: {
+        height: '100%',
+        width: '100%',
+        justifyContent:'center',
+        alignItems: 'center'
+    },
 });

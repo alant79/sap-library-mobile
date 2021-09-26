@@ -132,7 +132,8 @@ export const fetchData = () => {
             custdepList.push({
                 id: elF.objectid,
                 customerId: elF.customerid,               
-                name: elF.customername,
+                type: elF.objecttype,
+                customerName: elF.customerName || 'ARLA'
             })
         })
         return custdepList
@@ -161,6 +162,7 @@ export const fetchData = () => {
             }
             resData.push(newEl)
         })
+        console.log(resData)
     
     dispatch({ type: SET_DATA, resData });
         }
